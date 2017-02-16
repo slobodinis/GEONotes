@@ -80,6 +80,7 @@ public class PointInfoDBManager implements DBConstants {
                         c.getInt(c.getColumnIndex("radius"))));
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         dbHelper.close();
         return points;
@@ -102,6 +103,7 @@ public class PointInfoDBManager implements DBConstants {
                     c.getLong(c.getColumnIndex("term")),
                     c.getInt(c.getColumnIndex("radius")));
         }
+        c.close();
         db.close();
         dbHelper.close();
         return pointInfo;
