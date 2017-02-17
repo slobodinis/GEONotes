@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.apps.geo.notes.R;
-import com.apps.geo.notes.data.PointInfo;
+import com.apps.geo.notes.db.PointInfoDBManager;
+import com.apps.geo.notes.fragments.adapters.NoteAdapter;
 
 public class NoteListFragment extends Fragment{
     @Nullable
@@ -22,6 +23,9 @@ public class NoteListFragment extends Fragment{
     }
 
     private void fillNoteList(ListView view){
-        // todo implement CursorAdapter
+        view.setAdapter(new NoteAdapter(new PointInfoDBManager(getContext())));
     }
+
+
+
 }

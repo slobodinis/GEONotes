@@ -1,4 +1,4 @@
-package com.apps.geo.notes.data;
+package com.apps.geo.notes.pojo;
 
 import java.util.Date;
 

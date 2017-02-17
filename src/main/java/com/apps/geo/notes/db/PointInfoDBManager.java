@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.apps.geo.notes.data.PointInfo;
+import com.apps.geo.notes.pojo.PointInfo;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -132,4 +132,7 @@ public class PointInfoDBManager implements DBConstants {
         }
     }
 
+    public Context getContext() {
+        return context;
+    }
 }
