@@ -2,7 +2,6 @@ package com.apps.geo.notes;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -14,16 +13,14 @@ import com.apps.geo.notes.pojo.PointInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap map;
+    private GoogleMapManager mapManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +36,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     .add(R.id.main_activity_root, mainFragment).commit();
         }
 
+        //TODO <remove>
         PointInfoDBManager dbManager = new PointInfoDBManager(this);
         ArrayList<PointInfo> points = dbManager.getAllPoints();
         if (points.isEmpty()) {
             PointInfo point = new PointInfo("SUSU", "acabac", 55.158926, 61.365527, 200);
             dbManager.insertPoint(point);
+            point = new PointInfo("SUSU2", "acabac", 55.158926, 61.375527, 200);
+            dbManager.insertPoint(point);
         }
+        //TODO </remove>
+
         LocationTracking.startLocationTracking(this);
     }
 
@@ -52,19 +54,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.getUiSettings().setMapToolbarEnabled(false);
+        mapManager = new GoogleMapManager(this, googleMap);
 
-        final LatLng pos1 = new LatLng(55.158926, 61.375527);
-        map.addMarker(new MarkerOptions().position(pos1));
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
 
-        final LatLng pos2 = new LatLng(55.158926, 61.365527);
-        map.addMarker(new MarkerOptions().position(pos2).title("SUSU"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(pos2));
-        map.moveCamera(CameraUpdateFactory.zoomTo(14));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(55.158926, 61.375527)));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(14));
 
-        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+        googleMap.setMyLocationEnabled(true);
+
+        googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
                 return null;
@@ -72,27 +72,26 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public View getInfoContents(Marker marker) {
-                if (marker.getPosition().equals(pos2))
-                    return null;
                 return LayoutInflater.from(MainActivity.this).inflate(R.layout.info_window_layout, null);
             }
         });
-        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                if (marker.getPosition().equals(pos2))
-                    return;
                 marker.hideInfoWindow();
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "acabac", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
+        googleMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(Marker marker) {
+                marker.hideInfoWindow();
 
-        map.setMyLocationEnabled(true);
-        map.addCircle(new CircleOptions().strokeWidth(2).center(pos2).radius(200));
+                int id = Integer.parseInt(marker.getSnippet());
+                PointInfoDBManager dbManager = new PointInfoDBManager(MainActivity.this);
+                PointInfo point = dbManager.getPointById(id);
+                mapManager.removePoint(point);
+            }
+        });
     }
 }
