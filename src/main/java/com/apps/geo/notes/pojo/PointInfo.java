@@ -1,12 +1,13 @@
 package com.apps.geo.notes.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by 1038844 on 11.02.2017.
  */
 
-public class PointInfo {
+public class PointInfo implements Serializable {
 
     private int id;
     private String name;

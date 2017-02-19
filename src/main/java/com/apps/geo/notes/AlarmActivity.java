@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.apps.geo.notes.pojo.PointInfo;
 
 /**
  * Created by 1038844 on 16.02.2017.
@@ -36,6 +39,15 @@ public class AlarmActivity extends Activity {
         mediaPlayer = MediaPlayer.create(this, notification);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
+
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            Object obj = getIntent().getExtras().get("point");
+            if (obj != null) {
+                PointInfo point = (PointInfo) obj;
+                TextView textView = (TextView)findViewById(R.id.pointText);
+                textView.setText(point.getName()+" ("+point.getDescription()+")");
+            }
+        }
     }
 
     @Override

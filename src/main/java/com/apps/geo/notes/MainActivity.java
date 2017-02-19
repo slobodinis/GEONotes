@@ -2,17 +2,24 @@ package com.apps.geo.notes;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.fragments.MainFragment;
+import com.apps.geo.notes.geo.LocationTracking;
+import com.apps.geo.notes.pojo.PointInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -31,6 +38,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.main_activity_root, mainFragment).commit();
         }
+
+        PointInfoDBManager dbManager = new PointInfoDBManager(this);
+        ArrayList<PointInfo> points = dbManager.getAllPoints();
+        if (points.isEmpty()) {
+            PointInfo point = new PointInfo("SUSU", "acabac", 55.158926, 61.365527, 200);
+            dbManager.insertPoint(point);
+        }
+        LocationTracking.startLocationTracking(this);
     }
 
 
@@ -76,5 +91,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         });
+
+        map.setMyLocationEnabled(true);
+        map.addCircle(new CircleOptions().strokeWidth(2).center(pos2).radius(200));
     }
 }
