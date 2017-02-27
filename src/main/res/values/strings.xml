@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Notes</string>
     <string name="title_activity_main">Map</string>
+    <string name="add_point_string">Добавить точку</string>
 </resources>

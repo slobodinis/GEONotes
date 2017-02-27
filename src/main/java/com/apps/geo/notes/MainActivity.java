@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.apps.geo.notes.db.PointInfoDBManager;
+import com.apps.geo.notes.dialogs.MenuDialog;
 import com.apps.geo.notes.fragments.MainFragment;
 import com.apps.geo.notes.geo.LocationTracking;
 import com.apps.geo.notes.pojo.PointInfo;
@@ -93,5 +94,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 mapManager.removePoint(point);
             }
         });
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                MenuDialog menuDialog = new MenuDialog();
+                menuDialog.setLatLng(latLng);
+                menuDialog.show(getFragmentManager(),"");
+            }
+        });
+    }
+
+    public GoogleMapManager getMapManager()
+    {
+        return mapManager;
     }
 }

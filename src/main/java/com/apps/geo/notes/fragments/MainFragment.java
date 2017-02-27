@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,8 @@ public class MainFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pager, null);
         ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
-        pager.setAdapter(new NavigationAdapter(getFragmentManager()));
+        NavigationAdapter adapter = new NavigationAdapter(getChildFragmentManager());
+        pager.setAdapter(adapter);
         pager.requestTransparentRegion(pager);
         return rootView;
     }
@@ -59,6 +61,11 @@ public class MainFragment extends Fragment{
         @Override
         public int getCount() {
             return 2;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 }
