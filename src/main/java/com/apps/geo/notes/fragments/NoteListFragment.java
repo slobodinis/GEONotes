@@ -3,10 +3,8 @@ package com.apps.geo.notes.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.util.SparseArray;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +16,9 @@ import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.fragments.adapters.NoteAdapter;
 import com.apps.geo.notes.fragments.adapters.NoteSelectAdapter;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.TreeSet;
-
 public class NoteListFragment extends Fragment{
     private ListView mNoteListView;
+    private FloatingActionButton mFAButton;
     private PointInfoDBManager mDBManager;
 
     @Nullable
@@ -31,6 +26,7 @@ public class NoteListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.notes_fragment, container, false);
         mNoteListView = (ListView) rootView.findViewById(R.id.note_list_view);
+        mFAButton = (FloatingActionButton) rootView.findViewById(R.id.fa_button);
         mDBManager = new PointInfoDBManager(getContext());
         switchToBaseForm();
         return rootView;
@@ -44,6 +40,7 @@ public class NoteListFragment extends Fragment{
             }
         });
         mNoteListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
+        makeAdditionButton();
     }
 
     public void switchToSelectForm(){
@@ -55,7 +52,7 @@ public class NoteListFragment extends Fragment{
             }
         };
         mNoteListView.setAdapter(adapter);
-
+        makeDeletionButton(adapter);
     }
 
 
@@ -68,5 +65,18 @@ public class NoteListFragment extends Fragment{
         switchToBaseForm();
     }
 
+    private void makeAdditionButton(){
+        mFAButton.setImageResource(R.drawable.ic_add);
+//        mFAButton.setOnClickListener();
+    }
 
+    private void makeDeletionButton(final NoteSelectAdapter adapter){
+        mFAButton.setImageResource(R.drawable.ic_delete);
+        mFAButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeSelected(adapter);
+            }
+        });
+    }
 }

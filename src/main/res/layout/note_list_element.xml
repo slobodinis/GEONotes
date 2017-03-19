@@ -9,19 +9,21 @@
         android:id="@+id/note_edit_button"
         android:layout_width="50dip"
         android:layout_height="50dip"
-        android:layout_marginRight="10dip"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:background="@android:drawable/ic_menu_edit" />
+        android:layout_marginRight="10dip"
+        android:background="@drawable/ic_edit"
+        android:backgroundTint="@color/colorPrimaryDark" />
 
     <ImageButton
         android:id="@+id/note_location_button"
         android:layout_width="50dip"
         android:layout_height="50dip"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:background="@android:drawable/ic_menu_compass" />
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ic_location"
+        android:backgroundTint="@color/colorPrimaryDark" />
     
     <TextView
         android:id="@+id/note_description"
