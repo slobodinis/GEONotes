@@ -1,11 +1,12 @@
 package com.apps.geo.notes.fragments.adapters;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.apps.geo.notes.R;
@@ -13,19 +14,20 @@ import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.pojo.PointInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
-public abstract class NoteAdapter extends BaseAdapter implements Switchable {
+public abstract class NoteSelectAdapter extends BaseAdapter implements Selectable{
     private ArrayList<PointInfo> mNotes;
     private Context mContext;
 
     static class ViewHolder {
         TextView mainText;
         TextView description;
-        ImageButton geoButton;
-        ImageButton editButton;
+        CheckBox checkBox;
     }
 
-    public NoteAdapter(PointInfoDBManager manager) {
+    public NoteSelectAdapter(PointInfoDBManager manager) {
         // TODO disable demo
         mNotes = new ArrayList<>();
         mNotes.add(new PointInfo("Some text", "acabac", 0,0,0));
@@ -50,36 +52,41 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
+    public View getView(final int i, View view, ViewGroup viewGroup) {
+        final ViewHolder viewHolder;
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.note_list_element, viewGroup, false);
+            view = inflater.inflate(R.layout.note_selection_list_element, viewGroup, false);
             viewHolder = new ViewHolder();
             viewHolder.mainText = (TextView) view.findViewById(R.id.note_caption);
             viewHolder.description = (TextView) view.findViewById(R.id.note_description);
-            viewHolder.geoButton = (ImageButton) view.findViewById(R.id.note_location_button);
-            viewHolder.editButton = (ImageButton) view.findViewById(R.id.note_edit_button);
+            viewHolder.checkBox = (CheckBox) view.findViewById(R.id.note_checkbox);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 //        TODO
-//        viewHolder.editButton.setOnClickListener();
+        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSelect(i, viewHolder.checkBox.isChecked());
+            }
+        });
 //        viewHolder.geoButton.setOnClickListener();
         viewHolder.mainText.setText(mNotes.get(i).getName());
         viewHolder.description.setText(mNotes.get(i).getDescription());
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                onSwitchForm();
-                return true;
-            }
-        });
         return view;
     }
 
-
+    public Iterable<Integer> getIdsForDeletion(SparseBooleanArray positions){
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int i=0; i<positions.size(); ++i){
+            if (positions.valueAt(i)){
+                result.add(mNotes.get(positions.keyAt(i)).getId());
+            }
+        }
+        return result;
+    }
 
 }

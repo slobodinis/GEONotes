@@ -135,5 +135,4 @@ public class PointInfo {
         return radius;
     }
 
-
 }
