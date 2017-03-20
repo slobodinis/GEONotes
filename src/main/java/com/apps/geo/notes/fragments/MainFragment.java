@@ -17,6 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 public class MainFragment extends Fragment{
     private SupportMapFragment mMapFragment;
+    private int item = 0;
 
     public MainFragment() {
     }
@@ -36,6 +37,7 @@ public class MainFragment extends Fragment{
         ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
         NavigationAdapter adapter = new NavigationAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
+        pager.setCurrentItem(item);
         pager.requestTransparentRegion(pager);
         return rootView;
     }
@@ -67,5 +69,10 @@ public class MainFragment extends Fragment{
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }
+    }
+
+    public void setItem(int item)
+    {
+        this.item = item;
     }
 }
