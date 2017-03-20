@@ -17,6 +17,7 @@ public class PointInfo implements Serializable {
     private double longitude;
     private Date date;
     private double radius;
+    private boolean isActive;
 
     public PointInfo(String name, String description, double lattitude, double longitude, double radius)
     {
@@ -27,6 +28,7 @@ public class PointInfo implements Serializable {
         this.radius = radius;
         term = -1;
         date = new Date();
+        isActive = true;
     }
 
     public PointInfo(String name, String description, double lattitude, double longitude, Date date, long term, double radius)
@@ -38,6 +40,7 @@ public class PointInfo implements Serializable {
         this.radius = radius;
         this.date = date;
         this.term = term;
+        isActive = true;
     }
     public PointInfo(int id,String name, String description, double lattitude, double longitude, Date date, long term, double radius)
     {
@@ -49,6 +52,23 @@ public class PointInfo implements Serializable {
         this.date = date;
         this.term = term;
         this.radius = radius;
+        isActive = true;
+    }
+
+    public PointInfo(int id,String name, String description, double lattitude, double longitude, Date date, long term, double radius,int is_active)
+    {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.lattitude = lattitude;
+        this.longitude = longitude;
+        this.date = date;
+        this.term = term;
+        this.radius = radius;
+        if (is_active == 0)
+            isActive = false;
+        else
+            isActive = true;
     }
 
     public void setName(String name)
@@ -136,5 +156,13 @@ public class PointInfo implements Serializable {
         return radius;
     }
 
+    public boolean getIsActive()
+    {
+        return isActive;
+    }
 
+    public void setIsActive(boolean isActive)
+    {
+        this.isActive = isActive;
+    }
 }

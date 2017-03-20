@@ -61,7 +61,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.getUiSettings().setMapToolbarEnabled(false);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(55.158926, 61.375527)));
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(1));
 
         googleMap.setMyLocationEnabled(true);
 

@@ -35,6 +35,10 @@ public class PointInfoDBManager implements DBConstants {
         cv.put("date", pointInfo.getDate().getTime());
         cv.put("term", pointInfo.getTerm());
         cv.put("radius",pointInfo.getRadius());
+        if (pointInfo.getIsActive())
+            cv.put("is_active",1);
+        else
+            cv.put("is_active",0);
         try {
             db.insert(POINT_INFO, null, cv);
         } catch (Exception e)
@@ -77,7 +81,8 @@ public class PointInfoDBManager implements DBConstants {
                         c.getDouble(c.getColumnIndex("longitude")),
                         new Date(c.getLong(c.getColumnIndex("date"))),
                         c.getLong(c.getColumnIndex("term")),
-                        c.getInt(c.getColumnIndex("radius"))));
+                        c.getInt(c.getColumnIndex("radius")),
+                        c.getInt(c.getColumnIndex("is_active"))));
             } while (c.moveToNext());
         }
         c.close();
@@ -101,7 +106,8 @@ public class PointInfoDBManager implements DBConstants {
                     c.getDouble(c.getColumnIndex("longitude")),
                     new Date(c.getLong(c.getColumnIndex("date"))),
                     c.getLong(c.getColumnIndex("term")),
-                    c.getInt(c.getColumnIndex("radius")));
+                    c.getInt(c.getColumnIndex("radius")),
+                    c.getInt(c.getColumnIndex("is_active")));
         }
         c.close();
         db.close();
@@ -121,6 +127,10 @@ public class PointInfoDBManager implements DBConstants {
         cv.put("date", pointInfo.getDate().getTime());
         cv.put("term", pointInfo.getTerm());
         cv.put("radius",pointInfo.getRadius());
+        if (pointInfo.getIsActive())
+            cv.put("is_active",1);
+        else
+            cv.put("is_active",0);
         try {
             db.update(POINT_INFO, cv, "id = ?",new String[] { pointInfo.getId()+"" });
         } catch (Exception e)
@@ -130,6 +140,32 @@ public class PointInfoDBManager implements DBConstants {
             db.close();
             dbHelper.close();
         }
+    }
+
+    public ArrayList<PointInfo> getActivePoints()
+    {
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.query(POINT_INFO,null,"is_active=?",new String[]{1+""},null,null,null);
+        ArrayList<PointInfo> points = new ArrayList<>();
+        if (c.moveToFirst())
+        {
+            do {
+                points.add(new PointInfo(c.getInt(c.getColumnIndex("id")),
+                        c.getString(c.getColumnIndex("name")),
+                        c.getString(c.getColumnIndex("description")),
+                        c.getDouble(c.getColumnIndex("lattitude")),
+                        c.getDouble(c.getColumnIndex("longitude")),
+                        new Date(c.getLong(c.getColumnIndex("date"))),
+                        c.getLong(c.getColumnIndex("term")),
+                        c.getInt(c.getColumnIndex("radius")),
+                        c.getInt(c.getColumnIndex("is_active"))));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        dbHelper.close();
+        return points;
     }
 
     public Context getContext() {
