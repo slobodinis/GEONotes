@@ -114,6 +114,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     AddPointFragment addPointFragment = (AddPointFragment) getSupportFragmentManager().findFragmentById(R.id.main_activity_root);
                     addPointFragment.setPoint(latLng);
                     changePoint = false;
+                    mainFragment.enableSwipe();
                 }
             }
         });
@@ -137,8 +138,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onBackPressed()
     {
-        if (changePoint)
+        if (changePoint) {
             changePoint = false;
+            mainFragment.enableSwipe();
+        }
         super.onBackPressed();
     }
 }

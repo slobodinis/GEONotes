@@ -66,6 +66,7 @@ public class AddPointFragment extends Fragment {
                 MainActivity mainActivity = (MainActivity)getActivity();
                 MainFragment mainFragment = mainActivity.getMainFragment();
                 mainFragment.setItem(1);
+                mainFragment.disableSwipe();
                 mainActivity.setChangePoint(true);
                 mainActivity.getSupportFragmentManager().beginTransaction()
                         .hide(AddPointFragment.this)

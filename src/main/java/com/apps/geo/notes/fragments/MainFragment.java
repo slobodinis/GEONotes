@@ -14,12 +14,13 @@ import android.view.ViewGroup;
 
 import com.apps.geo.notes.MainActivity;
 import com.apps.geo.notes.R;
+import com.apps.geo.notes.fragments.viewpager.CustomViewPager;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class MainFragment extends Fragment{
     private SupportMapFragment mMapFragment;
     private NoteListFragment noteListFragment;
-    private ViewPager pager;
+    private CustomViewPager pager;
     private int item = 0;
 
     public MainFragment() {
@@ -37,7 +38,7 @@ public class MainFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pager, null);
-        pager = (ViewPager) rootView.findViewById(R.id.pager);
+        pager = (CustomViewPager) rootView.findViewById(R.id.pager);
         NavigationAdapter adapter = new NavigationAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
         pager.setCurrentItem(item);
@@ -85,5 +86,15 @@ public class MainFragment extends Fragment{
         if (noteListFragment == null)
             noteListFragment = new NoteListFragment();
         return noteListFragment;
+    }
+
+    public void enableSwipe()
+    {
+        pager.isSwipeEnabled = true;
+    }
+
+    public void disableSwipe()
+    {
+        pager.isSwipeEnabled = false;
     }
 }
