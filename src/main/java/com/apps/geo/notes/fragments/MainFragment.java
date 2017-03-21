@@ -17,6 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 public class MainFragment extends Fragment{
     private SupportMapFragment mMapFragment;
+    private NoteListFragment noteListFragment;
     private int item = 0;
 
     public MainFragment() {
@@ -52,7 +53,7 @@ public class MainFragment extends Fragment{
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new NoteListFragment();
+                    return MainFragment.this.getNoteListFragment();
                 case 1:
                     return MainFragment.this.loadMap();
                 default:
@@ -74,5 +75,12 @@ public class MainFragment extends Fragment{
     public void setItem(int item)
     {
         this.item = item;
+    }
+
+    public NoteListFragment getNoteListFragment()
+    {
+        if (noteListFragment == null)
+            noteListFragment = new NoteListFragment();
+        return noteListFragment;
     }
 }

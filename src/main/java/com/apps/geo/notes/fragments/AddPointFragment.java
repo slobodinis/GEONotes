@@ -50,6 +50,8 @@ public class AddPointFragment extends Fragment {
                     pointInfoDBManager.insertPoint(pointInfo);
                     ((MainActivity)getActivity()).getMapManager().addPoint(pointInfo);
                     ((MainActivity)getActivity()).getMapManager().update();
+                    MainFragment mainFragment = ((MainActivity)getActivity()).getMainFragment();
+                    mainFragment.getNoteListFragment().switchToBaseForm();
                     getActivity().onBackPressed();
                 } catch (Exception e)
                 {
