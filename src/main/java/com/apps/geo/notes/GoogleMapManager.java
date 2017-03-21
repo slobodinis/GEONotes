@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.pojo.PointInfo;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -84,6 +85,12 @@ public class GoogleMapManager {
 
     private int getCircleColor() {
         return Color.GREEN;
+    }
+
+    public void centerOnPoint(PointInfo info){
+        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(info.getLatitude(),
+                info.getLongitude())));
+        map.moveCamera(CameraUpdateFactory.zoomTo(14));
     }
 
 }

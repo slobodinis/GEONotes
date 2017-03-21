@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.apps.geo.notes.GoogleMapManager;
 import com.apps.geo.notes.MainActivity;
 import com.apps.geo.notes.R;
 import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.fragments.adapters.NoteAdapter;
 import com.apps.geo.notes.fragments.adapters.NoteSelectAdapter;
+import com.apps.geo.notes.pojo.PointInfo;
 
 public class NoteListFragment extends Fragment{
     private ListView mNoteListView;
@@ -35,6 +37,14 @@ public class NoteListFragment extends Fragment{
 
     public void switchToBaseForm(){
         mNoteListView.setAdapter(new NoteAdapter(mDBManager) {
+            @Override
+            protected void onMoveToLocation(PointInfo info) {
+                MainActivity activity = (MainActivity) getActivity();
+                GoogleMapManager mapManager = activity.getMapManager();
+                activity.getMainFragment().setItem(1);
+                mapManager.centerOnPoint(info);
+            }
+
             @Override
             public void onSwitchForm() {
                 switchToSelectForm();

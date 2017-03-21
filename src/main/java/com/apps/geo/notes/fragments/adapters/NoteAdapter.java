@@ -26,10 +26,6 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
     }
 
     public NoteAdapter(PointInfoDBManager manager) {
-        // TODO disable demo
-//        mNotes = new ArrayList<>();
-//        mNotes.add(new PointInfo("Some text", "acabac", 0,0,0));
-//        mNotes.add(new PointInfo("I need more text", "acabac again", 0,0,0));
         mNotes = manager.getAllPoints();
         mContext = manager.getContext();
     }
@@ -50,7 +46,7 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) mContext
@@ -67,7 +63,12 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
         }
 //        TODO
 //        viewHolder.editButton.setOnClickListener();
-//        viewHolder.geoButton.setOnClickListener();
+        viewHolder.geoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onMoveToLocation(mNotes.get(i));
+            }
+        });
         viewHolder.mainText.setText(mNotes.get(i).getName());
         viewHolder.description.setText(mNotes.get(i).getDescription());
         view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -80,6 +81,6 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
         return view;
     }
 
-
+    protected abstract void onMoveToLocation(PointInfo info);
 
 }
