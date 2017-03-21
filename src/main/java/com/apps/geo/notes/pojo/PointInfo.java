@@ -1,10 +1,13 @@
 package com.apps.geo.notes.pojo;
 
+import android.content.ContentValues;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class PointInfo implements Serializable {
 
+    private boolean active;
     private int id;
     private String name;
     private String description;
@@ -15,7 +18,7 @@ public class PointInfo implements Serializable {
     private double radius;
 
     public PointInfo(String name, String description, double latitude, double longitude, Date date,
-                     long term, double radius) {
+                     long term, double radius, boolean active) {
         this.name = name;
         this.description = description;
         this.latitude = latitude;
@@ -23,15 +26,20 @@ public class PointInfo implements Serializable {
         this.radius = radius;
         this.date = date;
         this.term = term;
+        this.active = active;
+    }
+
+    public PointInfo(String name, String description, double latitude, double longitude, Date date,
+                     long term, double radius) {
+        this(name, description, latitude, longitude, date, term, radius, true);
     }
 
     public PointInfo(String name, String description, double latitude, double longitude, double radius) {
-        this(name, description, latitude, longitude, new Date(), -1, radius);
+        this(name, description, latitude, longitude, new Date(), -1, radius, true);
     }
 
-    public PointInfo(int id, String name, String description, double latitude, double longitude, Date date, long term, double radius)
-    {
-        this(name, description, latitude, longitude, date, term, radius);
+    public PointInfo(int id, String name, String description, double latitude, double longitude, Date date, long term, double radius, boolean active) {
+        this(name, description, latitude, longitude, date, term, radius, active);
         this.id = id;
     }
 
@@ -115,9 +123,32 @@ public class PointInfo implements Serializable {
         this.radius = radius;
     }
 
-    public double getRadius()
-    {
+    public double getRadius(){
         return radius;
     }
 
+    public void enableAlarm(){
+        this.active = true;
+    }
+
+    public void disableAlarm(){
+        this.active = false;
+    }
+
+    public boolean isActive(){
+        return this.active;
+    }
+
+    public ContentValues toContentValues(){
+        ContentValues cv = new ContentValues();
+        cv.put("name", this.getName());
+        cv.put("active", this.isActive() ? 1: 0);
+        cv.put("description", this.getDescription());
+        cv.put("latitude", this.getLatitude());
+        cv.put("longitude", this.getLongitude());
+        cv.put("date", this.getDate().getTime());
+        cv.put("term", this.getTerm());
+        cv.put("radius", this.getRadius());
+        return cv;
+    }
 }

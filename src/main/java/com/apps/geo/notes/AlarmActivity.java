@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.pojo.PointInfo;
 
 /**
@@ -19,6 +20,7 @@ import com.apps.geo.notes.pojo.PointInfo;
 public class AlarmActivity extends Activity {
 
     private MediaPlayer mediaPlayer;
+    private PointInfo info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class AlarmActivity extends Activity {
         shutUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                info.disableAlarm();
+                new PointInfoDBManager(AlarmActivity.this).updatePointById(info);
                 AlarmActivity.this.finish();
             }
         });
@@ -43,16 +47,15 @@ public class AlarmActivity extends Activity {
         if (getIntent() != null && getIntent().getExtras() != null) {
             Object obj = getIntent().getExtras().get("point");
             if (obj != null) {
-                PointInfo point = (PointInfo) obj;
+                info = (PointInfo) obj;
                 TextView textView = (TextView)findViewById(R.id.pointText);
-                textView.setText(point.getName()+" ("+point.getDescription()+")");
+                textView.setText(info.getName()+" ("+info.getDescription()+")");
             }
         }
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy(){
         mediaPlayer.stop();
         mediaPlayer.release();
         super.onDestroy();

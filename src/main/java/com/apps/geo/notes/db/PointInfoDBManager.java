@@ -1,6 +1,5 @@
 package com.apps.geo.notes.db;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,20 +18,11 @@ public class PointInfoDBManager implements DBConstants {
         this.context = context;
     }
 
-    public void insertPoint(PointInfo pointInfo)
-    {
-        ContentValues cv = new ContentValues();
+    public void insertPoint(PointInfo pointInfo){
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        cv.put("name", pointInfo.getName());
-        cv.put("description", pointInfo.getDescription());
-        cv.put("latitude", pointInfo.getLatitude());
-        cv.put("longitude", pointInfo.getLongitude());
-        cv.put("date", pointInfo.getDate().getTime());
-        cv.put("term", pointInfo.getTerm());
-        cv.put("radius",pointInfo.getRadius());
         try {
-            db.insert(POINT_INFO, null, cv);
+            db.insert(POINT_INFO, null, pointInfo.toContentValues());
         } catch (Exception e)
         {
         }
@@ -66,14 +56,7 @@ public class PointInfoDBManager implements DBConstants {
         if (c.moveToFirst())
         {
             do {
-                points.add(new PointInfo(c.getInt(c.getColumnIndex("id")),
-                        c.getString(c.getColumnIndex("name")),
-                        c.getString(c.getColumnIndex("description")),
-                        c.getDouble(c.getColumnIndex("latitude")),
-                        c.getDouble(c.getColumnIndex("longitude")),
-                        new Date(c.getLong(c.getColumnIndex("date"))),
-                        c.getLong(c.getColumnIndex("term")),
-                        c.getInt(c.getColumnIndex("radius"))));
+                points.add(getFromCursor(c));
             } while (c.moveToNext());
         }
         c.close();
@@ -88,16 +71,8 @@ public class PointInfoDBManager implements DBConstants {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.query(POINT_INFO,null, "id = ?", new String[]{id + ""}, null, null, null);
         PointInfo pointInfo = null;
-        if (c.moveToFirst())
-        {
-            pointInfo = new PointInfo(c.getInt(c.getColumnIndex("id")),
-                    c.getString(c.getColumnIndex("name")),
-                    c.getString(c.getColumnIndex("description")),
-                    c.getDouble(c.getColumnIndex("latitude")),
-                    c.getDouble(c.getColumnIndex("longitude")),
-                    new Date(c.getLong(c.getColumnIndex("date"))),
-                    c.getLong(c.getColumnIndex("term")),
-                    c.getInt(c.getColumnIndex("radius")));
+        if (c.moveToFirst()){
+            pointInfo = getFromCursor(c);
         }
         c.close();
         db.close();
@@ -105,20 +80,26 @@ public class PointInfoDBManager implements DBConstants {
         return pointInfo;
     }
 
+    private PointInfo getFromCursor(Cursor c){
+        return new PointInfo(c.getInt(c.getColumnIndex("id")),
+                c.getString(c.getColumnIndex("name")),
+                c.getString(c.getColumnIndex("description")),
+                c.getDouble(c.getColumnIndex("latitude")),
+                c.getDouble(c.getColumnIndex("longitude")),
+                new Date(c.getLong(c.getColumnIndex("date"))),
+                c.getLong(c.getColumnIndex("term")),
+                c.getInt(c.getColumnIndex("radius")),
+                c.getInt(c.getColumnIndex("active")) != 0);
+    }
+
     public void updatePointById(PointInfo pointInfo)
     {
-        ContentValues cv = new ContentValues();
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        cv.put("name", pointInfo.getName());
-        cv.put("description", pointInfo.getDescription());
-        cv.put("latitude", pointInfo.getLatitude());
-        cv.put("longitude", pointInfo.getLongitude());
-        cv.put("date", pointInfo.getDate().getTime());
-        cv.put("term", pointInfo.getTerm());
-        cv.put("radius",pointInfo.getRadius());
         try {
-            db.update(POINT_INFO, cv, "id = ?",new String[] { pointInfo.getId()+"" });
+            db.update(POINT_INFO, pointInfo.toContentValues(), "id = ?", new String[] {
+                    String.valueOf(pointInfo.getId())
+            });
         } catch (Exception e)
         {
         }

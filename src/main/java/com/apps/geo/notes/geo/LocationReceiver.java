@@ -27,14 +27,17 @@ public class LocationReceiver extends BroadcastReceiver {
 
                 float[] dist = new float[1];
                 for (PointInfo point : points) {
-                    Location.distanceBetween(location.getLatitude(), location.getLongitude(),
-                            point.getLatitude(), point.getLongitude(), dist);
+                    if (point.isActive()) {
+                        Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+                                point.getLatitude(), point.getLongitude(), dist);
 
-                    if (dist[0] < point.getRadius()) {
-                        Intent i = new Intent(context, AlarmActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.putExtra("point", point);
-                        context.startActivity(i);
+                        if (dist[0] < point.getRadius()) {
+
+                            Intent i = new Intent(context, AlarmActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.putExtra("point", point);
+                            context.startActivity(i);
+                        }
                     }
                 }
             }
