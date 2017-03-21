@@ -3,4 +3,8 @@
     <string name="title_activity_main">Map</string>
     <string name="add_point_string">Добавить точку</string>
     <string name="change_point">Изменить</string>
+    <string name="hint_name">Название</string>
+    <string name="hint_description">Описание</string>
+    <string name="label_radius">Радиус, м</string>
+    <string name="label_enable">Оповестить при приближении</string>
 </resources>

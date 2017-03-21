@@ -1,74 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:layout_gravity="center">
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/nameEdit"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:hint="Название"/>
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/descriptionEdit"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:hint="Описание"/>
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/radiusEdit"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:hint="Радиус"/>
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/termEdit"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:hint="Срок"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rsb="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:gravity="center">
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:id="@+id/name_edit"
+                android:gravity="top|center_horizontal"
                 android:textSize="20sp"
                 android:layout_margin="10dp"
-                android:id="@+id/latitudeText"/>
-            <TextView
-                android:layout_width="wrap_content"
+                android:hint="@string/hint_name"/>
+            <EditText
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:id="@+id/description_edit"
+                android:gravity="top|center_horizontal"
                 android:textSize="20sp"
                 android:layout_margin="10dp"
-                android:id="@+id/longitudeText"/>
+                android:hint="@string/hint_description"/>
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_radius"/>
+
+            <org.florescu.android.rangeseekbar.RangeSeekBar
+                android:id="@+id/radius_bar"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                rsb:textAboveThumbsColor="@color/colorAccent"
+                rsb:absoluteMaxValue="1000.0"
+                rsb:activeColor="@color/colorAccent"
+                rsb:absoluteMinValue="50.0"
+                rsb:singleThumb="true"/>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/change_point_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_edit_location"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:contentDescription="@string/change_point" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_margin="10dp"
+                    android:id="@+id/coordinates_text"/>
+                </LinearLayout>
         </LinearLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/change_point"
-            android:id="@+id/changePointButton"/>
-    </LinearLayout>
-    <Button
+    </ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_point_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/addPointButton"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:text="Добавить"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="32dip"
+        android:layout_marginRight="16dip"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_add_location" />
 
-</LinearLayout>
+</RelativeLayout>
