@@ -23,7 +23,7 @@ public class LocationReceiver extends BroadcastReceiver {
                 Log.wtf("location", location.toString());
 
                 PointInfoDBManager dbManager = new PointInfoDBManager(context);
-                ArrayList<PointInfo> points = dbManager.getAllPoints();
+                ArrayList<PointInfo> points = dbManager.getActivePoints();
 
                 float[] dist = new float[1];
                 for (PointInfo point : points) {

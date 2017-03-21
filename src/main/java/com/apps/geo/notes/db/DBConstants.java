@@ -7,5 +7,5 @@ package com.apps.geo.notes.db;
 public interface DBConstants {
     public String DB_NAME = "geo_notes_db";
     public String POINT_INFO = "point_info";
-    public int DB_VERSION = 1;
+    public int DB_VERSION = 2;
 }

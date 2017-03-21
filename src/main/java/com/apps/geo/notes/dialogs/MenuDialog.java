@@ -2,6 +2,7 @@ package com.apps.geo.notes.dialogs;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,11 @@ public class MenuDialog extends DialogFragment {
             public void onClick(View view) {
                 AddPointFragment addPointFragment = new AddPointFragment();
                 addPointFragment.setPoint(point);
+                Fragment fragment = ((MainActivity)getActivity()).getSupportFragmentManager().findFragmentById(R.id.main_activity_root);
                 ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_activity_root,addPointFragment)
+                        //.replace(R.id.main_activity_root,addPointFragment)
+                        .hide(fragment)
+                        .add(R.id.main_activity_root,addPointFragment)
                         .addToBackStack("stack")
                         .commit();
                 dismiss();

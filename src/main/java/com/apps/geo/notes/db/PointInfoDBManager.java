@@ -109,6 +109,24 @@ public class PointInfoDBManager implements DBConstants {
         }
     }
 
+    public ArrayList<PointInfo> getActivePoints()
+    {
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.query(POINT_INFO,null,"active=?",new String[]{1+""},null,null,null);
+        ArrayList<PointInfo> points = new ArrayList<>();
+        if (c.moveToFirst())
+        {
+            do {
+                points.add(getFromCursor(c));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        dbHelper.close();
+        return points;
+    }
+
     public Context getContext() {
         return context;
     }

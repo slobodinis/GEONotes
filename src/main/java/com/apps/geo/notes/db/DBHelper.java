@@ -31,5 +31,9 @@ public class DBHelper extends SQLiteOpenHelper implements DBConstants{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 1)
+        {
+            db.execSQL("alter table " + POINT_INFO + " add column is_active integer");
+        }
     }
 }
