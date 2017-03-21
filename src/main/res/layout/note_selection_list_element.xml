@@ -5,25 +5,22 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip" >
 
-    <ImageButton
-        android:id="@+id/note_edit_button"
+    <Space
+        android:id="@+id/note_space"
         android:layout_width="50dip"
         android:layout_height="50dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
         android:layout_marginRight="10dip"
-        android:background="@drawable/ic_edit"
-        android:backgroundTint="@color/colorPrimaryDark" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"/>
 
-    <ImageButton
-        android:id="@+id/note_location_button"
+    <CheckBox
+        android:id="@+id/note_checkbox"
+        android:checked="false"
         android:layout_width="50dip"
         android:layout_height="50dip"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/ic_location"
-        android:backgroundTint="@color/colorPrimaryDark" />
+        android:layout_alignParentRight="true"/>
     
     <TextView
         android:id="@+id/note_description"
@@ -31,8 +28,8 @@
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/note_edit_button"
-        android:layout_toLeftOf="@id/note_location_button"
+        android:layout_toRightOf="@id/note_space"
+        android:layout_toLeftOf="@id/note_checkbox"
         android:ellipsize="marquee"
         android:maxLines="1"
         android:textSize="12sp" />
@@ -45,8 +42,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/note_edit_button"
-        android:layout_toLeftOf="@id/note_location_button"
+        android:layout_toRightOf="@id/note_space"
+        android:layout_toLeftOf="@id/note_checkbox"
         android:gravity="center_vertical"
         android:textSize="16sp" />
 

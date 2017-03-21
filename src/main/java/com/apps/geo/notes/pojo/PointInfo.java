@@ -136,5 +136,4 @@ public class PointInfo implements Serializable {
         return radius;
     }
 
-
 }
