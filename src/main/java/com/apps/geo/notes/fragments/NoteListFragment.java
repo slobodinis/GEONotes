@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.apps.geo.notes.MainActivity;
 import com.apps.geo.notes.R;
 import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.fragments.adapters.NoteAdapter;
@@ -76,7 +77,12 @@ public class NoteListFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 removeSelected(adapter);
+                onMapRepaint();
             }
         });
+    }
+
+    public void onMapRepaint(){
+        ((MainActivity) getActivity()).getMapManager().update();
     }
 }

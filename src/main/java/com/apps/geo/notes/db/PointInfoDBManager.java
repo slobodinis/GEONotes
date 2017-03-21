@@ -10,10 +10,6 @@ import com.apps.geo.notes.pojo.PointInfo;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by 1038844 on 11.02.2017.
- */
-
 public class PointInfoDBManager implements DBConstants {
 
     private Context context;
@@ -30,7 +26,7 @@ public class PointInfoDBManager implements DBConstants {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         cv.put("name", pointInfo.getName());
         cv.put("description", pointInfo.getDescription());
-        cv.put("lattitude", pointInfo.getLattitude());
+        cv.put("latitude", pointInfo.getLatitude());
         cv.put("longitude", pointInfo.getLongitude());
         cv.put("date", pointInfo.getDate().getTime());
         cv.put("term", pointInfo.getTerm());
@@ -73,7 +69,7 @@ public class PointInfoDBManager implements DBConstants {
                 points.add(new PointInfo(c.getInt(c.getColumnIndex("id")),
                         c.getString(c.getColumnIndex("name")),
                         c.getString(c.getColumnIndex("description")),
-                        c.getDouble(c.getColumnIndex("lattitude")),
+                        c.getDouble(c.getColumnIndex("latitude")),
                         c.getDouble(c.getColumnIndex("longitude")),
                         new Date(c.getLong(c.getColumnIndex("date"))),
                         c.getLong(c.getColumnIndex("term")),
@@ -97,7 +93,7 @@ public class PointInfoDBManager implements DBConstants {
             pointInfo = new PointInfo(c.getInt(c.getColumnIndex("id")),
                     c.getString(c.getColumnIndex("name")),
                     c.getString(c.getColumnIndex("description")),
-                    c.getDouble(c.getColumnIndex("lattitude")),
+                    c.getDouble(c.getColumnIndex("latitude")),
                     c.getDouble(c.getColumnIndex("longitude")),
                     new Date(c.getLong(c.getColumnIndex("date"))),
                     c.getLong(c.getColumnIndex("term")),
@@ -116,7 +112,7 @@ public class PointInfoDBManager implements DBConstants {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         cv.put("name", pointInfo.getName());
         cv.put("description", pointInfo.getDescription());
-        cv.put("lattitude", pointInfo.getLattitude());
+        cv.put("latitude", pointInfo.getLatitude());
         cv.put("longitude", pointInfo.getLongitude());
         cv.put("date", pointInfo.getDate().getTime());
         cv.put("term", pointInfo.getTerm());

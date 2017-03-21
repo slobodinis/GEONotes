@@ -41,9 +41,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         PointInfoDBManager dbManager = new PointInfoDBManager(this);
         ArrayList<PointInfo> points = dbManager.getAllPoints();
         if (points.isEmpty()) {
-            PointInfo point = new PointInfo("SUSU", "acabac", 55.158926, 61.365527, 200);
+            PointInfo point = new PointInfo("SUSU", "acabac", 55.158926, 61.365527, 400);
             dbManager.insertPoint(point);
-            point = new PointInfo("SUSU2", "acabac", 55.158926, 61.375527, 200);
+            point = new PointInfo("SUSU2", "acabac", 55.158926, 61.375527, 400);
             dbManager.insertPoint(point);
         }
         //TODO </remove>

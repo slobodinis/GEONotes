@@ -46,7 +46,7 @@ public class GoogleMapManager {
     }
 
     public void addPoint(PointInfo point) {
-        LatLng pos = new LatLng(point.getLattitude(), point.getLongitude());
+        LatLng pos = new LatLng(point.getLatitude(), point.getLongitude());
         Marker marker = map.addMarker
                 (new MarkerOptions()
                         .position(pos)

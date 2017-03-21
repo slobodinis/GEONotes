@@ -27,10 +27,10 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
 
     public NoteAdapter(PointInfoDBManager manager) {
         // TODO disable demo
-        mNotes = new ArrayList<>();
-        mNotes.add(new PointInfo("Some text", "acabac", 0,0,0));
-        mNotes.add(new PointInfo("I need more text", "acabac again", 0,0,0));
-//        mNotes = manager.getAllPoints();
+//        mNotes = new ArrayList<>();
+//        mNotes.add(new PointInfo("Some text", "acabac", 0,0,0));
+//        mNotes.add(new PointInfo("I need more text", "acabac again", 0,0,0));
+        mNotes = manager.getAllPoints();
         mContext = manager.getContext();
     }
 

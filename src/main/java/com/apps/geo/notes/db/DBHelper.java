@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper implements DBConstants{
                 + "name text,"
                 + "description text,"
                 + "term long,"
-                + "lattitude real,"
+                + "latitude real,"
                 + "longitude real,"
                 + "radius real,"
                 + "date long"+ ");");

@@ -3,52 +3,36 @@ package com.apps.geo.notes.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by 1038844 on 11.02.2017.
- */
-
 public class PointInfo implements Serializable {
 
     private int id;
     private String name;
     private String description;
     private long term;
-    private double lattitude;
+    private double latitude;
     private double longitude;
     private Date date;
     private double radius;
 
-    public PointInfo(String name, String description, double lattitude, double longitude, double radius)
-    {
+    public PointInfo(String name, String description, double latitude, double longitude, Date date,
+                     long term, double radius) {
         this.name = name;
         this.description = description;
-        this.lattitude = lattitude;
+        this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;
-        term = -1;
-        date = new Date();
+        this.date = date;
+        this.term = term;
     }
 
-    public PointInfo(String name, String description, double lattitude, double longitude, Date date, long term, double radius)
-    {
-        this.name = name;
-        this.description = description;
-        this.lattitude = lattitude;
-        this.longitude = longitude;
-        this.radius = radius;
-        this.date = date;
-        this.term = term;
+    public PointInfo(String name, String description, double latitude, double longitude, double radius) {
+        this(name, description, latitude, longitude, new Date(), -1, radius);
     }
-    public PointInfo(int id,String name, String description, double lattitude, double longitude, Date date, long term, double radius)
+
+    public PointInfo(int id, String name, String description, double latitude, double longitude, Date date, long term, double radius)
     {
+        this(name, description, latitude, longitude, date, term, radius);
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.lattitude = lattitude;
-        this.longitude = longitude;
-        this.date = date;
-        this.term = term;
-        this.radius = radius;
     }
 
     public void setName(String name)
@@ -81,14 +65,14 @@ public class PointInfo implements Serializable {
         return term;
     }
 
-    public void setLattitude(long lattitude)
+    public void setLatitude(long latitude)
     {
-        this.lattitude = lattitude;
+        this.latitude = latitude;
     }
 
-    public double getLattitude()
+    public double getLatitude()
     {
-        return lattitude;
+        return latitude;
     }
 
     public void setLongitude(long longitude)

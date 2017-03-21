@@ -29,7 +29,7 @@ public class AddPointFragment extends Fragment {
         final EditText description = (EditText) view.findViewById(R.id.descriptionEdit);
         final EditText term = (EditText) view.findViewById(R.id.termEdit);
         final EditText radius = (EditText) view.findViewById(R.id.radiusEdit);
-        TextView lat = (TextView)view.findViewById(R.id.lattitudeText);
+        TextView lat = (TextView)view.findViewById(R.id.latitudeText);
         lat.setText(point.latitude + "");
         TextView lng = (TextView)view.findViewById(R.id.longitudeText);
         lng.setText(point.longitude + "");
