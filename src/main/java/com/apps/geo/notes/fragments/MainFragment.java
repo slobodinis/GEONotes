@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 public class MainFragment extends Fragment{
     private SupportMapFragment mMapFragment;
     private NoteListFragment noteListFragment;
+    private ViewPager pager;
     private int item = 0;
 
     public MainFragment() {
@@ -35,7 +37,7 @@ public class MainFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pager, null);
-        ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
+        pager = (ViewPager) rootView.findViewById(R.id.pager);
         NavigationAdapter adapter = new NavigationAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
         pager.setCurrentItem(item);
@@ -75,6 +77,7 @@ public class MainFragment extends Fragment{
     public void setItem(int item)
     {
         this.item = item;
+        pager.setCurrentItem(item);
     }
 
     public NoteListFragment getNoteListFragment()

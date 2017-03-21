@@ -68,7 +68,17 @@ public class NoteListFragment extends Fragment{
 
     private void makeAdditionButton(){
         mFAButton.setImageResource(R.drawable.ic_add);
-//        mFAButton.setOnClickListener();
+        mFAButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddPointFragment addPointFragment = new AddPointFragment();
+                NoteListFragment.this.getActivity().getSupportFragmentManager().beginTransaction()
+                        .hide(((MainActivity)getActivity()).getMainFragment())
+                        .add(R.id.main_activity_root,addPointFragment)
+                        .addToBackStack("stack")
+                        .commit();
+            }
+        });
     }
 
     private void makeDeletionButton(final NoteSelectAdapter adapter){
