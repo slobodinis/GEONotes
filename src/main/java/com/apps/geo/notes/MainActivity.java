@@ -1,5 +1,7 @@
 package com.apps.geo.notes;
 
+import android.app.FragmentManager;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.dialogs.MenuDialog;
 import com.apps.geo.notes.fragments.AddPointFragment;
 import com.apps.geo.notes.fragments.MainFragment;
+import com.apps.geo.notes.fragments.adapters.MapClickAdapter;
 import com.apps.geo.notes.geo.LocationTracking;
 import com.apps.geo.notes.pojo.PointInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,12 +27,13 @@ import java.util.ArrayList;
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMapManager mapManager;
+    private MapClickAdapter mapClickAdapter;
     private MainFragment mainFragment;
-    private boolean changePoint = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.main_activity_root) != null) {
             if (savedInstanceState != null) {
@@ -60,6 +64,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mapManager = new GoogleMapManager(this, googleMap);
+        mapClickAdapter = new MapClickAdapter(false, mapManager, mainFragment) {
+            @Override
+            protected FragmentManager getFragmentManager() {
+                return MainActivity.this.getFragmentManager();
+            }
+
+            @Override
+            protected android.support.v4.app.FragmentManager getSupportFragmentManager() {
+                return MainActivity.this.getSupportFragmentManager();
+            }
+        };
 
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.getUiSettings().setMapToolbarEnabled(false);
@@ -101,21 +116,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if (!changePoint) {
-                    MenuDialog menuDialog = new MenuDialog();
-                    menuDialog.setLatLng(latLng);
-                    menuDialog.show(getFragmentManager(), "");
-                } else
-                {
-                    getSupportFragmentManager().beginTransaction()
-                            .hide(mainFragment)
-                            .commit();
-                    getSupportFragmentManager().popBackStack();
-                    AddPointFragment addPointFragment = (AddPointFragment) getSupportFragmentManager().findFragmentById(R.id.main_activity_root);
-                    addPointFragment.setPoint(latLng);
-                    changePoint = false;
-                    mainFragment.enableSwipe();
-                }
+                mapClickAdapter.performClick(latLng);
             }
         });
     }
@@ -130,18 +131,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         return mainFragment;
     }
 
-    public void setChangePoint(boolean changePoint)
-    {
-        this.changePoint = changePoint;
+    public MapClickAdapter getMapClickAdapter(){
+        return mapClickAdapter;
     }
 
     @Override
-    public void onBackPressed()
-    {
-        if (changePoint) {
-            changePoint = false;
-            mainFragment.enableSwipe();
-        }
+    public void onBackPressed(){
+        mapClickAdapter.finishTargeting();
         super.onBackPressed();
     }
 }

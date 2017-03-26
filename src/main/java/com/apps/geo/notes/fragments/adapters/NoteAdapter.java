@@ -79,7 +79,7 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
             }
         };
         viewHolder.description.setOnClickListener(textListener);
-        viewHolder.mainText.setOnClickListener(textListener);
+//        viewHolder.mainText.setOnClickListener(textListener);
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

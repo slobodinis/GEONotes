@@ -2,24 +2,25 @@ package com.apps.geo.notes.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.apps.geo.notes.MainActivity;
 import com.apps.geo.notes.R;
+import com.apps.geo.notes.fragments.adapters.MapClickAdapter;
 import com.apps.geo.notes.fragments.viewpager.CustomViewPager;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class MainFragment extends Fragment{
-    private SupportMapFragment mMapFragment;
+    private SupportMapFragment mapFragment;
     private NoteListFragment noteListFragment;
+    private FloatingActionButton fab;
     private CustomViewPager pager;
     private int item = 0;
 
@@ -27,18 +28,34 @@ public class MainFragment extends Fragment{
     }
 
     private SupportMapFragment loadMap() {
-        if (mMapFragment == null){
-            mMapFragment = SupportMapFragment.newInstance();
-            mMapFragment.getMapAsync((MainActivity) getActivity());
+        if (mapFragment == null){
+            mapFragment = SupportMapFragment.newInstance();
+            mapFragment.getMapAsync((MainActivity) getActivity());
         }
-        return mMapFragment;
+        return mapFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pager, null);
+        RelativeLayout rootView = (RelativeLayout) inflater.inflate(R.layout.main_fragment, null);
         pager = (CustomViewPager) rootView.findViewById(R.id.pager);
+        fab = (FloatingActionButton) rootView.findViewById(R.id.confirm_target_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.beginTransaction()
+                        .hide(MainFragment.this)
+                        .commit();
+                manager.popBackStack();
+                AddPointFragment addPointFragment = (AddPointFragment) manager
+                        .findFragmentById(R.id.main_activity_root);
+                MapClickAdapter adapter = ((MainActivity) getActivity()).getMapClickAdapter();
+                addPointFragment.setPoint(adapter.getChosenPoint());
+                adapter.finishTargeting();
+            }
+        });
         NavigationAdapter adapter = new NavigationAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
         pager.setCurrentItem(item);
@@ -88,13 +105,13 @@ public class MainFragment extends Fragment{
         return noteListFragment;
     }
 
-    public void enableSwipe()
-    {
+    public void normalMode(){
+        fab.setVisibility(View.GONE);
         pager.isSwipeEnabled = true;
     }
 
-    public void disableSwipe()
-    {
+    public void targetingMode(){
+        fab.setVisibility(View.VISIBLE);
         pager.isSwipeEnabled = false;
     }
 }

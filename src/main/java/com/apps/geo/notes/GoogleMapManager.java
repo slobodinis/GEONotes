@@ -36,8 +36,7 @@ public class GoogleMapManager {
     }
 
     public void update() {
-        map.clear();
-        views.clear();
+        clearMap();
 
         PointInfoDBManager dbManager = new PointInfoDBManager(context);
         ArrayList<PointInfo> points = dbManager.getAllPoints();
@@ -91,6 +90,16 @@ public class GoogleMapManager {
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(info.getLatitude(),
                 info.getLongitude())));
         map.moveCamera(CameraUpdateFactory.zoomTo(14));
+    }
+
+    public void clearMap(){
+        map.clear();
+        views.clear();
+    }
+
+    public void setTargetingMaker(LatLng latLng){
+        clearMap();
+        map.addMarker(new MarkerOptions().position(latLng));
     }
 
 }

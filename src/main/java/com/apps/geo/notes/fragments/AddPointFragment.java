@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,9 +14,9 @@ import android.widget.TextView;
 import com.apps.geo.notes.MainActivity;
 import com.apps.geo.notes.R;
 import com.apps.geo.notes.db.PointInfoDBManager;
+import com.apps.geo.notes.fragments.adapters.MapClickAdapter;
 import com.apps.geo.notes.pojo.PointInfo;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
@@ -65,8 +64,11 @@ public class AddPointFragment extends Fragment {
                 MainActivity mainActivity = (MainActivity)getActivity();
                 MainFragment mainFragment = mainActivity.getMainFragment();
                 mainFragment.setItem(1);
-                mainFragment.disableSwipe();
-                mainActivity.setChangePoint(true);
+                mainFragment.targetingMode();
+                MapClickAdapter adapter = mainActivity.getMapClickAdapter();
+                if (adapter != null){
+                    adapter.startTargeting();
+                }
                 mainActivity.getSupportFragmentManager().beginTransaction()
                         .hide(AddPointFragment.this)
                         .show(mainFragment)
