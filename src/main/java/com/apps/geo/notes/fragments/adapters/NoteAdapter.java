@@ -1,6 +1,7 @@
 package com.apps.geo.notes.fragments.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,14 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
         });
         viewHolder.mainText.setText(mNotes.get(i).getName());
         viewHolder.description.setText(mNotes.get(i).getDescription());
+        View.OnClickListener textListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onShowVerbose(mNotes.get(i));
+            }
+        };
+        viewHolder.description.setOnClickListener(textListener);
+        viewHolder.mainText.setOnClickListener(textListener);
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -83,4 +92,5 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
 
     protected abstract void onMoveToLocation(PointInfo info);
 
+    protected abstract void onShowVerbose(PointInfo info);
 }

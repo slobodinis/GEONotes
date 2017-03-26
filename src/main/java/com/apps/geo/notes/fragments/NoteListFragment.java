@@ -1,6 +1,8 @@
 package com.apps.geo.notes.fragments;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -43,6 +45,21 @@ public class NoteListFragment extends Fragment{
                 GoogleMapManager mapManager = activity.getMapManager();
                 activity.getMainFragment().setItem(1);
                 mapManager.centerOnPoint(info);
+            }
+
+            @Override
+            protected void onShowVerbose(PointInfo info) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(info.getName())
+                        .setMessage(info.getDescription())
+                        .setNegativeButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
 
             @Override
