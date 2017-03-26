@@ -63,7 +63,12 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
             viewHolder = (ViewHolder) view.getTag();
         }
 //        TODO
-//        viewHolder.editButton.setOnClickListener();
+        viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onEditPointInfo(mNotes.get(i));
+            }
+        });
         viewHolder.geoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +96,6 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
     }
 
     protected abstract void onMoveToLocation(PointInfo info);
-
     protected abstract void onShowVerbose(PointInfo info);
+    protected abstract void onEditPointInfo(PointInfo info);
 }

@@ -63,6 +63,13 @@ public class NoteListFragment extends Fragment{
             }
 
             @Override
+            protected void onEditPointInfo(PointInfo info) {
+                AddPointFragment addPointFragment = new AddPointFragment();
+                addPointFragment.setPointInfo(info);
+                showAddPointFragment(addPointFragment);
+            }
+
+            @Override
             public void onSwitchForm() {
                 switchToSelectForm();
             }
@@ -99,11 +106,7 @@ public class NoteListFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 AddPointFragment addPointFragment = new AddPointFragment();
-                NoteListFragment.this.getActivity().getSupportFragmentManager().beginTransaction()
-                        .hide(((MainActivity)getActivity()).getMainFragment())
-                        .add(R.id.main_activity_root,addPointFragment)
-                        .addToBackStack("stack")
-                        .commit();
+                showAddPointFragment(addPointFragment);
             }
         });
     }
@@ -121,5 +124,14 @@ public class NoteListFragment extends Fragment{
 
     public void onMapRepaint(){
         ((MainActivity) getActivity()).getMapManager().update();
+    }
+
+
+    private void showAddPointFragment(AddPointFragment addPointFragment){
+        NoteListFragment.this.getActivity().getSupportFragmentManager().beginTransaction()
+                .hide(((MainActivity)getActivity()).getMainFragment())
+                .add(R.id.main_activity_root, addPointFragment)
+                .addToBackStack("stack")
+                .commit();
     }
 }

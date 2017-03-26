@@ -18,9 +18,27 @@ import java.util.ArrayList;
 
 public class GoogleMapManager {
 
-    private class PointInfoView {
-        public Marker marker;
-        public Circle circle;
+    private class PointInfoView  {
+        private Marker marker;
+        private Circle circle;
+
+        PointInfoView(PointInfo point){
+            LatLng pos = new LatLng(point.getLatitude(), point.getLongitude());
+            marker = map.addMarker
+                    (new MarkerOptions()
+                            .position(pos)
+                            .title(point.getName())
+                            .snippet(point.getId()+"")
+                    );
+            circle = map.addCircle
+                    (new CircleOptions()
+                            .center(pos)
+                            .radius(point.getRadius())
+                            .strokeColor(getCircleColor())
+                            .strokeWidth(2)
+                    );
+        }
+
     }
 
     private Context context;
@@ -46,23 +64,7 @@ public class GoogleMapManager {
     }
 
     public void addPoint(PointInfo point) {
-        LatLng pos = new LatLng(point.getLatitude(), point.getLongitude());
-        Marker marker = map.addMarker
-                (new MarkerOptions()
-                        .position(pos)
-                        .title(point.getName())
-                        .snippet(point.getId()+"")
-                );
-        Circle circle = map.addCircle
-                (new CircleOptions()
-                        .center(pos)
-                        .radius(point.getRadius())
-                        .strokeColor(getCircleColor())
-                        .strokeWidth(2)
-                );
-        PointInfoView view = new PointInfoView();
-        view.circle = circle;
-        view.marker = marker;
+        PointInfoView view = new PointInfoView(point);
         views.put(point.getId(), view);
     }
 

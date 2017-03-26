@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import com.apps.geo.notes.db.PointInfoDBManager;
-import com.apps.geo.notes.dialogs.MenuDialog;
-import com.apps.geo.notes.fragments.AddPointFragment;
 import com.apps.geo.notes.fragments.MainFragment;
 import com.apps.geo.notes.fragments.adapters.MapClickAdapter;
 import com.apps.geo.notes.geo.LocationTracking;
@@ -18,7 +15,6 @@ import com.apps.geo.notes.pojo.PointInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 

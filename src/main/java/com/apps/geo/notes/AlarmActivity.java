@@ -31,7 +31,7 @@ public class AlarmActivity extends Activity {
         shutUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                info.disableAlarm();
+                info.setActive(false);
                 new PointInfoDBManager(AlarmActivity.this).updatePointById(info);
                 AlarmActivity.this.finish();
             }

@@ -36,11 +36,14 @@ public abstract class MapClickAdapter {
         menuDialog.show(getFragmentManager(), "");
     }
 
-    public void startTargeting(){
+    public void startTargeting(LatLng startPoint){
         mMapManager.clearMap();
         if (!mTargeting) {
             mTargeting = true;
             mMainFragment.targetingMode();
+            if (startPoint != null){
+                performTargetingClick(startPoint);
+            }
         }
     }
 
