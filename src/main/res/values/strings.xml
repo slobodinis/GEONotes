@@ -7,4 +7,5 @@
     <string name="hint_description">Описание</string>
     <string name="label_radius">Радиус, м</string>
     <string name="label_enable">Оповестить при приближении</string>
+    <string name="point_nearby">Рядом с вами отмеченная точка:</string>
 </resources>

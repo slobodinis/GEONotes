@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,10 +14,6 @@ import android.widget.TextView;
 
 import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.pojo.PointInfo;
-
-/**
- * Created by 1038844 on 16.02.2017.
- */
 
 public class AlarmActivity extends Activity {
 
@@ -27,7 +24,7 @@ public class AlarmActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_activity);
-        Button shutUpButton = (Button) findViewById(R.id.shutUpButton);
+        FloatingActionButton shutUpButton = (FloatingActionButton) findViewById(R.id.shut_up_fab);
         shutUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,8 +46,8 @@ public class AlarmActivity extends Activity {
             Object obj = getIntent().getExtras().get("point");
             if (obj != null) {
                 info = (PointInfo) obj;
-                TextView textView = (TextView)findViewById(R.id.pointText);
-                textView.setText(info.getName()+" ("+info.getDescription()+")");
+                ((TextView)findViewById(R.id.point_text)).setText(info.getName());
+                ((TextView)findViewById(R.id.point_description)).setText(info.getDescription());
             }
         }
     }

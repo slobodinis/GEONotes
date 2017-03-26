@@ -43,17 +43,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     .add(R.id.main_activity_root, mainFragment).commit();
         }
 
-        //TODO <remove>
-        PointInfoDBManager dbManager = new PointInfoDBManager(this);
-        ArrayList<PointInfo> points = dbManager.getAllPoints();
-        if (points.isEmpty()) {
-            PointInfo point = new PointInfo("SUSU", "acabac", 55.158926, 61.365527, 400);
-            dbManager.insertPoint(point);
-            point = new PointInfo("SUSU2", "acabac", 55.158926, 61.375527, 400);
-            dbManager.insertPoint(point);
-        }
-        //TODO </remove>
-
         LocationTracking.startLocationTracking(this);
     }
 
@@ -78,7 +67,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.getUiSettings().setMapToolbarEnabled(false);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(55.158926, 61.375527)));
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(1));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(12));
 
         googleMap.setMyLocationEnabled(true);
 
