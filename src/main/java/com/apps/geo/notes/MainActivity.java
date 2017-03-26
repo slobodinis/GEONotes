@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.apps.geo.notes.db.PointInfoDBManager;
+import com.apps.geo.notes.fragments.AddPointFragment;
 import com.apps.geo.notes.fragments.MainFragment;
 import com.apps.geo.notes.fragments.adapters.MapClickAdapter;
 import com.apps.geo.notes.geo.LocationTracking;
@@ -88,7 +90,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public View getInfoContents(Marker marker) {
-                return LayoutInflater.from(MainActivity.this).inflate(R.layout.info_window_layout, null);
+                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.info_window_layout, null);
+                ((TextView) view.findViewById(R.id.point_name)).setText(fromMarker(marker).getName());
+                return view;
             }
         });
 
@@ -102,11 +106,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowLongClick(Marker marker) {
                 marker.hideInfoWindow();
-
-                int id = Integer.parseInt(marker.getSnippet());
-                PointInfoDBManager dbManager = new PointInfoDBManager(MainActivity.this);
-                PointInfo point = dbManager.getPointById(id);
-                mapManager.removePoint(point);
+                AddPointFragment addPointFragment = new AddPointFragment();
+                addPointFragment.setPointInfo(fromMarker(marker));
+                getSupportFragmentManager().beginTransaction()
+                        .hide(mainFragment)
+                        .add(R.id.main_activity_root, addPointFragment)
+                        .addToBackStack("stack")
+                        .commit();
             }
         });
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -135,5 +141,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onBackPressed(){
         mapClickAdapter.finishTargeting();
         super.onBackPressed();
+    }
+
+    private PointInfo fromMarker(Marker marker) {
+        int id = Integer.parseInt(marker.getSnippet());
+        PointInfoDBManager dbManager = new PointInfoDBManager(MainActivity.this);
+        return dbManager.getPointById(id);
     }
 }

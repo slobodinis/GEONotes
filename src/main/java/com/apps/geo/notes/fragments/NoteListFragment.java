@@ -43,8 +43,10 @@ public class NoteListFragment extends Fragment{
             protected void onMoveToLocation(PointInfo info) {
                 MainActivity activity = (MainActivity) getActivity();
                 GoogleMapManager mapManager = activity.getMapManager();
-                activity.getMainFragment().setItem(1);
-                mapManager.centerOnPoint(info);
+                if (mapManager != null) {
+                    activity.getMainFragment().setItem(1);
+                    mapManager.centerOnPoint(info);
+                }
             }
 
             @Override
