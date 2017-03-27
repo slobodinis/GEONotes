@@ -22,6 +22,8 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 
+import static android.R.attr.id;
+
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMapManager mapManager;
@@ -79,8 +81,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public View getInfoContents(Marker marker) {
+                PointInfo pointInfo = fromMarker(marker);
+                if (pointInfo == null)
+                    return null;
                 View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.info_window_layout, null);
-                ((TextView) view.findViewById(R.id.point_name)).setText(fromMarker(marker).getName());
+                ((TextView) view.findViewById(R.id.point_name)).setText(pointInfo.getName());
                 return view;
             }
         });
@@ -95,13 +100,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowLongClick(Marker marker) {
                 marker.hideInfoWindow();
-                AddPointFragment addPointFragment = new AddPointFragment();
-                addPointFragment.setPointInfo(fromMarker(marker));
-                getSupportFragmentManager().beginTransaction()
-                        .hide(mainFragment)
-                        .add(R.id.main_activity_root, addPointFragment)
-                        .addToBackStack("stack")
-                        .commit();
+                PointInfo pointInfo = fromMarker(marker);
+                if (pointInfo != null) {
+                    AddPointFragment addPointFragment = new AddPointFragment();
+                    addPointFragment.setPointInfo(pointInfo);
+                    getSupportFragmentManager().beginTransaction()
+                            .hide(mainFragment)
+                            .add(R.id.main_activity_root, addPointFragment)
+                            .addToBackStack("stack")
+                            .commit();
+                }
             }
         });
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -133,6 +141,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private PointInfo fromMarker(Marker marker) {
+        if (marker.getSnippet() == null)
+            return null;
         int id = Integer.parseInt(marker.getSnippet());
         PointInfoDBManager dbManager = new PointInfoDBManager(MainActivity.this);
         return dbManager.getPointById(id);

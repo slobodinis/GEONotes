@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:orientation="vertical" android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
             <EditText
@@ -52,10 +53,9 @@
                 android:layout_margin="20dp"
                 android:text="@string/label_enable"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <ImageButton
                     android:id="@+id/change_point_button"
@@ -64,13 +64,24 @@
                     android:background="@drawable/ic_edit_location"
                     android:backgroundTint="@color/colorPrimary"
                     android:contentDescription="@string/change_point" />
+                <ImageButton
+                    android:id="@+id/search_point_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_search"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:contentDescription="@string/change_point"
+                    android:layout_alignParentEnd="true"/>
                 <TextView
+                    android:id="@+id/coordinates_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:layout_margin="10dp"
-                    android:id="@+id/coordinates_text"/>
-                </LinearLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/change_point_button"
+                    android:layout_toStartOf="@id/search_point_button"
+                    android:textSize="20sp"/>
+                </RelativeLayout>
         </LinearLayout>
     </ScrollView>
     <android.support.design.widget.FloatingActionButton

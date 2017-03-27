@@ -1,8 +1,10 @@
 package com.apps.geo.notes.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +13,23 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.geo.notes.MainActivity;
 import com.apps.geo.notes.R;
 import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.fragments.adapters.MapClickAdapter;
 import com.apps.geo.notes.pojo.PointInfo;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
-import java.util.Date;
-
 public class AddPointFragment extends Fragment {
+
+    private final int PLACE_PICKER_REQUEST_CODE = 4573;
+
     private LatLng point;
     private PointInfo pointInfo;
     private TextView coordinates;
@@ -105,7 +111,45 @@ public class AddPointFragment extends Fragment {
         };
         changePointButton.setOnClickListener(listener);
         coordinates.setOnClickListener(listener);
+
+        view.findViewById(R.id.search_point_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST_CODE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "Ошибка Google Play Services",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Place place = PlacePicker.getPlace(getContext(), data);
+            String resultName = place.getName().toString();
+            String resultAddress = place.getAddress().toString();
+            LatLng resultPos = place.getLatLng();
+
+            if (name != null && name.getText().toString().isEmpty())
+                name.setText(resultName);
+            if (description != null && description.getText().toString().isEmpty())
+                description.setText(resultAddress);
+            setPoint(resultPos);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void setPoint(LatLng point){

@@ -16,6 +16,7 @@ public class LocationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.wtf("афыафыа", "gsgfdgfdg");
         if (intent != null && intent.getExtras() != null) {
             Object obj = intent.getExtras().get("location");
             if (obj != null) {
