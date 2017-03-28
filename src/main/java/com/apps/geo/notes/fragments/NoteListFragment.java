@@ -67,7 +67,7 @@ public class NoteListFragment extends Fragment{
             @Override
             protected void onEditPointInfo(PointInfo info) {
                 AddPointFragment addPointFragment = new AddPointFragment();
-                addPointFragment.setPointInfo(info);
+                addPointFragment.setPointInfo(mDBManager.getPointById(info.getId()));
                 showAddPointFragment(addPointFragment);
             }
 

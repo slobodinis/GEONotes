@@ -34,13 +34,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private MainFragment mainFragment;
 
     private Bundle savedInstanceState;
+    private PointInfoDBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-
+        dbManager = new PointInfoDBManager(MainActivity.this);
         this.savedInstanceState = savedInstanceState;
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -136,7 +137,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 PointInfo pointInfo = fromMarker(marker);
                 if (pointInfo != null) {
                     AddPointFragment addPointFragment = new AddPointFragment();
-                    addPointFragment.setPointInfo(pointInfo);
+                    addPointFragment.setPointInfo(dbManager.getPointById(pointInfo.getId()));
                     getSupportFragmentManager().beginTransaction()
                             .hide(mainFragment)
                             .add(R.id.main_activity_root, addPointFragment)
@@ -173,11 +174,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onBackPressed();
     }
 
+    @Override
+    protected void onResume() {
+        if (mapManager != null) {
+            mapManager.update();
+        }
+        super.onResume();
+    }
+
     private PointInfo fromMarker(Marker marker) {
         if (marker.getSnippet() == null)
             return null;
         int id = Integer.parseInt(marker.getSnippet());
-        PointInfoDBManager dbManager = new PointInfoDBManager(MainActivity.this);
         return dbManager.getPointById(id);
     }
 }
