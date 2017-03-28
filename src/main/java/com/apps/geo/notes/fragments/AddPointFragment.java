@@ -137,16 +137,21 @@ public class AddPointFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Place place = PlacePicker.getPlace(getContext(), data);
-            String resultName = place.getName().toString();
-            String resultAddress = place.getAddress().toString();
-            LatLng resultPos = place.getLatLng();
+            try {
+                Place place = PlacePicker.getPlace(getContext(), data);
+                String resultName = place.getName() == null ? "" : place.getName().toString();
+                String resultAddress = place.getAddress() == null ? "" : place.getAddress().toString();
+                LatLng resultPos = place.getLatLng();
 
-            if (name != null && name.getText().toString().isEmpty())
-                name.setText(resultName);
-            if (description != null && description.getText().toString().isEmpty())
-                description.setText(resultAddress);
-            setPoint(resultPos);
+                if (name != null && name.getText().toString().isEmpty())
+                    name.setText(resultName);
+                if (description != null && description.getText().toString().isEmpty())
+                    description.setText(resultAddress);
+                if (resultPos != null)
+                    setPoint(resultPos);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
