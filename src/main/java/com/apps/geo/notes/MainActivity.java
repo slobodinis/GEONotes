@@ -1,8 +1,13 @@
 package com.apps.geo.notes;
 
+import android.Manifest;
 import android.app.FragmentManager;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,21 +25,51 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import java.util.ArrayList;
-
-import static android.R.attr.id;
-
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private final int PERMISSION_REQUEST_CODE = 54326;
 
     private GoogleMapManager mapManager;
     private MapClickAdapter mapClickAdapter;
     private MainFragment mainFragment;
+
+    private Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+
+        this.savedInstanceState = savedInstanceState;
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                init();
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            init();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                init();
+            } else {
+                finish();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    private void init() {
         if (findViewById(R.id.main_activity_root) != null) {
             if (savedInstanceState != null) {
                 return;
@@ -47,8 +82,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         LocationTracking.startLocationTracking(this);
     }
-
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
