@@ -34,8 +34,8 @@ public class GoogleMapManager {
                     (new CircleOptions()
                             .center(pos)
                             .radius(point.getRadius())
-                            .strokeColor(getCircleColor())
-                            .strokeWidth(2)
+                            .strokeColor(getCircleColor(point.isActive()))
+                            .strokeWidth(3)
                     );
         }
 
@@ -84,8 +84,8 @@ public class GoogleMapManager {
         }
     }
 
-    private int getCircleColor() {
-        return Color.GREEN;
+    private int getCircleColor(boolean isActive) {
+        return isActive ? Color.GREEN : Color.YELLOW;
     }
 
     public void centerOnPoint(PointInfo info){
