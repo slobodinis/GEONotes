@@ -136,4 +136,9 @@ public class NoteListFragment extends Fragment{
                 .addToBackStack("stack")
                 .commit();
     }
+
+    public void updateList() {
+        ((NoteAdapter)mNoteListView.getAdapter()).update();
+        ((NoteAdapter)mNoteListView.getAdapter()).notifyDataSetChanged();
+    }
 }

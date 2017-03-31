@@ -8,10 +8,8 @@ import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.pojo.PointInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -19,18 +17,16 @@ import java.util.ArrayList;
 public class GoogleMapManager {
 
     private class PointInfoView  {
-        private Marker marker;
-        private Circle circle;
 
         PointInfoView(PointInfo point){
             LatLng pos = new LatLng(point.getLatitude(), point.getLongitude());
-            marker = map.addMarker
+            map.addMarker
                     (new MarkerOptions()
                             .position(pos)
                             .title(point.getName())
                             .snippet(point.getId()+"")
                     );
-            circle = map.addCircle
+            map.addCircle
                     (new CircleOptions()
                             .center(pos)
                             .radius(point.getRadius())
@@ -66,22 +62,6 @@ public class GoogleMapManager {
     public void addPoint(PointInfo point) {
         PointInfoView view = new PointInfoView(point);
         views.put(point.getId(), view);
-    }
-
-    public void removePoint(PointInfo point) {
-        PointInfoView view = views.get(point.getId());
-        if (view != null) {
-            view.marker.remove();
-            view.circle.remove();
-            views.remove(point.getId());
-        }
-    }
-
-    public void changePointState(PointInfo point) {
-        PointInfoView view = views.get(point.getId());
-        if (view != null) {
-            //TODO change color, radius
-        }
     }
 
     private int getCircleColor(boolean isActive) {

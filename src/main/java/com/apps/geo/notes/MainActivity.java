@@ -178,6 +178,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onResume() {
         if (mapManager != null) {
             mapManager.update();
+            getMainFragment().getNoteListFragment().updateList();
         }
         super.onResume();
     }

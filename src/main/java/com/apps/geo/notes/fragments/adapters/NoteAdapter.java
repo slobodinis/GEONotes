@@ -1,11 +1,13 @@
 package com.apps.geo.notes.fragments.adapters;
 
 import android.content.Context;
-import android.text.TextUtils;
+import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,19 +18,27 @@ import com.apps.geo.notes.pojo.PointInfo;
 import java.util.ArrayList;
 
 public abstract class NoteAdapter extends BaseAdapter implements Switchable {
+
+    private PointInfoDBManager manager;
     private ArrayList<PointInfo> mNotes;
     private Context mContext;
 
     static class ViewHolder {
         TextView mainText;
         TextView description;
+        SwitchCompat activeSwitch;
         ImageButton geoButton;
         ImageButton editButton;
     }
 
     public NoteAdapter(PointInfoDBManager manager) {
-        mNotes = manager.getAllPoints();
+        this.manager = manager;
         mContext = manager.getContext();
+        update();
+    }
+
+    public void update() {
+        mNotes = manager.getAllPoints();
     }
 
     @Override
@@ -56,6 +66,7 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
             viewHolder = new ViewHolder();
             viewHolder.mainText = (TextView) view.findViewById(R.id.note_caption);
             viewHolder.description = (TextView) view.findViewById(R.id.note_description);
+            viewHolder.activeSwitch = (SwitchCompat) view.findViewById(R.id.note_switch);
             viewHolder.geoButton = (ImageButton) view.findViewById(R.id.note_location_button);
             viewHolder.editButton = (ImageButton) view.findViewById(R.id.note_edit_button);
             view.setTag(viewHolder);
@@ -77,12 +88,22 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
         });
         viewHolder.mainText.setText(mNotes.get(i).getName());
         viewHolder.description.setText(mNotes.get(i).getDescription());
+        viewHolder.activeSwitch.setChecked(mNotes.get(i).isActive());
+        Log.wtf("fasdf",mNotes.get(i).isActive()+"");
         View.OnClickListener textListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onShowVerbose(mNotes.get(i));
             }
         };
+        viewHolder.activeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mNotes.get(i).setActive(isChecked);
+                manager.updatePointById(mNotes.get(i));
+            }
+        });
+
         viewHolder.description.setOnClickListener(textListener);
 //        viewHolder.mainText.setOnClickListener(textListener);
         view.setOnLongClickListener(new View.OnLongClickListener() {

@@ -4,10 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by 1038844 on 04.01.2017.
- */
-
 public class DBHelper extends SQLiteOpenHelper implements DBConstants{
 
     public DBHelper(Context context) {
@@ -20,19 +16,15 @@ public class DBHelper extends SQLiteOpenHelper implements DBConstants{
                 + "id integer primary key autoincrement,"
                 + "name text,"
                 + "description text,"
-                + "term long,"
                 + "latitude real,"
                 + "longitude real,"
                 + "radius real,"
-                + "active integer default 1,"
-                + "date long"+ ");");
-
+                + "active integer default 1);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 1)
-        {
+        if (oldVersion == 1) {
             db.execSQL("alter table " + POINT_INFO + " add column is_active integer");
         }
     }

@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.apps.geo.notes.pojo.PointInfo;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class PointInfoDBManager implements DBConstants {
 
@@ -23,8 +22,8 @@ public class PointInfoDBManager implements DBConstants {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
             db.insert(POINT_INFO, null, pointInfo.toContentValues());
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         finally {
             db.close();
@@ -37,9 +36,9 @@ public class PointInfoDBManager implements DBConstants {
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
-            db.delete(POINT_INFO,"id = ?",new String[]{id+""});
-        } catch (Exception e)
-        {
+            db.delete(POINT_INFO, "id = ?", new String[]{id+""});
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         finally {
             db.close();
@@ -51,10 +50,9 @@ public class PointInfoDBManager implements DBConstants {
     {
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor c = db.query(POINT_INFO,null,null,null,null,null,null);
+        Cursor c = db.query(POINT_INFO, null, null, null, null, null, null);
         ArrayList<PointInfo> points = new ArrayList<>();
-        if (c.moveToFirst())
-        {
+        if (c.moveToFirst()) {
             do {
                 points.add(getFromCursor(c));
             } while (c.moveToNext());
@@ -69,7 +67,7 @@ public class PointInfoDBManager implements DBConstants {
     {
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor c = db.query(POINT_INFO,null, "id = ?", new String[]{id + ""}, null, null, null);
+        Cursor c = db.query(POINT_INFO, null, "id = ?", new String[]{id + ""}, null, null, null);
         PointInfo pointInfo = null;
         if (c.moveToFirst()){
             pointInfo = getFromCursor(c);
@@ -86,8 +84,6 @@ public class PointInfoDBManager implements DBConstants {
                 c.getString(c.getColumnIndex("description")),
                 c.getDouble(c.getColumnIndex("latitude")),
                 c.getDouble(c.getColumnIndex("longitude")),
-                new Date(c.getLong(c.getColumnIndex("date"))),
-                c.getLong(c.getColumnIndex("term")),
                 c.getInt(c.getColumnIndex("radius")),
                 c.getInt(c.getColumnIndex("active")) != 0);
     }
@@ -100,8 +96,8 @@ public class PointInfoDBManager implements DBConstants {
             db.update(POINT_INFO, pointInfo.toContentValues(), "id = ?", new String[] {
                     String.valueOf(pointInfo.getId())
             });
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         finally {
             db.close();
@@ -113,10 +109,9 @@ public class PointInfoDBManager implements DBConstants {
     {
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor c = db.query(POINT_INFO,null,"active=?",new String[]{1+""},null,null,null);
+        Cursor c = db.query(POINT_INFO, null, "active=?", new String[]{"1"}, null, null, null);
         ArrayList<PointInfo> points = new ArrayList<>();
-        if (c.moveToFirst())
-        {
+        if (c.moveToFirst()) {
             do {
                 points.add(getFromCursor(c));
             } while (c.moveToNext());

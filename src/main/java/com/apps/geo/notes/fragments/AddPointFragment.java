@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +54,8 @@ public class AddPointFragment extends Fragment {
             alarmCheck.setChecked(pointInfo.isActive());
             radius.setSelectedMaxValue(pointInfo.getRadius());
         }
-        final FloatingActionButton add = (FloatingActionButton) view.findViewById(R.id.add_point_button);
-        add.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addButton = (FloatingActionButton) view.findViewById(R.id.add_point_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -81,9 +80,8 @@ public class AddPointFragment extends Fragment {
                     MainFragment mainFragment = ((MainActivity)getActivity()).getMainFragment();
                     mainFragment.getNoteListFragment().switchToBaseForm();
                     getActivity().onBackPressed();
-                } catch (Exception e)
-                {
-                    Log.e("Error",e.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
