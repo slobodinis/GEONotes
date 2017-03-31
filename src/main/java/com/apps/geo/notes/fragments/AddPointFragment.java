@@ -42,7 +42,7 @@ public class AddPointFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_point_fragment, null);
         if (point == null)
-            point = new LatLng(0,0);
+            point = new LatLng(0, 0);
         name = (EditText) view.findViewById(R.id.name_edit);
         description = (EditText) view.findViewById(R.id.description_edit);
         radius = (RangeSeekBar) view.findViewById(R.id.radius_bar);
@@ -55,42 +55,9 @@ public class AddPointFragment extends Fragment {
             alarmCheck.setChecked(pointInfo.isActive());
             radius.setSelectedMaxValue(pointInfo.getRadius());
         }
-        FloatingActionButton addButton = (FloatingActionButton) view.findViewById(R.id.add_point_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (name.getText().toString().isEmpty()) {
-                    Snackbar.make(view, "Название не должно быть пустым", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
 
-                try {
-                    PointInfoDBManager pointInfoDBManager = new PointInfoDBManager(getActivity());
-                    if (pointInfo == null){
-                        pointInfo = new PointInfo();
-                    }
-                    pointInfo.setName(name.getText().toString());
-                    pointInfo.setDescription(description.getText().toString());
-                    pointInfo.setActive(alarmCheck.isChecked());
-                    pointInfo.setLatitude(point.latitude);
-                    pointInfo.setLongitude(point.longitude);
-                    pointInfo.setRadius(radius.getSelectedMaxValue().doubleValue());
-                    if (pointInfo.getId() != 0) {
-                        pointInfoDBManager.updatePointById(pointInfo);
-                        ((MainActivity)getActivity()).getMapManager().update();
-                    } else {
-                        pointInfoDBManager.insertPoint(pointInfo);
-                        ((MainActivity)getActivity()).getMapManager().addPoint(pointInfo);
-                    }
+        setAddButtonOnClickListener(view);
 
-                    MainFragment mainFragment = ((MainActivity)getActivity()).getMainFragment();
-                    mainFragment.getNoteListFragment().switchToBaseForm();
-                    getActivity().onBackPressed();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         ImageButton changePointButton = (ImageButton) view.findViewById(R.id.change_point_button);
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -175,5 +142,44 @@ public class AddPointFragment extends Fragment {
     public void setPointInfo(PointInfo info){
         this.pointInfo = info;
         setPoint(new LatLng(info.getLatitude(), info.getLongitude()));
+    }
+
+    private void setAddButtonOnClickListener(View parent) {
+        FloatingActionButton addButton = (FloatingActionButton) parent.findViewById(R.id.add_point_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (name.getText().toString().isEmpty()) {
+                    Snackbar.make(view, "Название не должно быть пустым", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                try {
+                    PointInfoDBManager pointInfoDBManager = new PointInfoDBManager(getActivity());
+                    if (pointInfo == null){
+                        pointInfo = new PointInfo();
+                    }
+                    pointInfo.setName(name.getText().toString());
+                    pointInfo.setDescription(description.getText().toString());
+                    pointInfo.setActive(alarmCheck.isChecked());
+                    pointInfo.setLatitude(point.latitude);
+                    pointInfo.setLongitude(point.longitude);
+                    pointInfo.setRadius(radius.getSelectedMaxValue().doubleValue());
+                    if (pointInfo.getId() != 0) {
+                        pointInfoDBManager.updatePointById(pointInfo);
+                        ((MainActivity)getActivity()).getMapManager().update();
+                    } else {
+                        pointInfoDBManager.insertPoint(pointInfo);
+                        ((MainActivity)getActivity()).getMapManager().addPoint(pointInfo);
+                    }
+
+                    MainFragment mainFragment = ((MainActivity)getActivity()).getMainFragment();
+                    mainFragment.getNoteListFragment().switchToBaseForm();
+                    getActivity().onBackPressed();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

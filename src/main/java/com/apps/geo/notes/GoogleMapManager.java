@@ -8,6 +8,8 @@ import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.pojo.PointInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -25,6 +27,7 @@ public class GoogleMapManager {
                             .position(pos)
                             .title(point.getName())
                             .snippet(point.getId()+"")
+                            .icon(getMarkerIcon(point.isActive()))
                     );
             map.addCircle
                     (new CircleOptions()
@@ -66,6 +69,12 @@ public class GoogleMapManager {
 
     private int getCircleColor(boolean isActive) {
         return isActive ? Color.GREEN : Color.YELLOW;
+    }
+
+    private BitmapDescriptor getMarkerIcon(boolean isActive) {
+        return isActive ?
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN) :
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
     }
 
     public void centerOnPoint(PointInfo info){
