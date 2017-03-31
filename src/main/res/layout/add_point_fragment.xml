@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rsb="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -84,14 +84,14 @@
                 </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_point_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="32dip"
-        android:layout_centerHorizontal="true"
         app:backgroundTint="@color/colorAccent"
         app:srcCompat="@drawable/ic_add_location" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,11 @@ public class AddPointFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (name.getText().toString().isEmpty()) {
+                    Snackbar.make(view, "Название не должно быть пустым", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
                 try {
                     PointInfoDBManager pointInfoDBManager = new PointInfoDBManager(getActivity());
                     if (pointInfo == null){
