@@ -161,6 +161,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     public MainFragment getMainFragment()
     {
+        if (mainFragment == null){
+            mainFragment = new MainFragment();
+        }
         return mainFragment;
     }
 

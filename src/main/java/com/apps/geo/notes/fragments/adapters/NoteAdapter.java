@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.apps.geo.notes.MainActivity;
 import com.apps.geo.notes.R;
 import com.apps.geo.notes.db.PointInfoDBManager;
 import com.apps.geo.notes.pojo.PointInfo;
@@ -101,22 +102,27 @@ public abstract class NoteAdapter extends BaseAdapter implements Switchable {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mNotes.get(i).setActive(isChecked);
                 manager.updatePointById(mNotes.get(i));
+                onUpdateMap();
             }
         });
 
         viewHolder.description.setOnClickListener(textListener);
 //        viewHolder.mainText.setOnClickListener(textListener);
-        view.setOnLongClickListener(new View.OnLongClickListener() {
+        View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 onSwitchForm();
                 return true;
             }
-        });
+        };
+
+        view.setOnLongClickListener(longClickListener);
+        viewHolder.description.setOnLongClickListener(longClickListener);
         return view;
     }
 
     protected abstract void onMoveToLocation(PointInfo info);
     protected abstract void onShowVerbose(PointInfo info);
     protected abstract void onEditPointInfo(PointInfo info);
+    protected abstract void onUpdateMap();
 }

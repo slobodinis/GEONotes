@@ -72,6 +72,11 @@ public class NoteListFragment extends Fragment{
             }
 
             @Override
+            protected void onUpdateMap() {
+                ((MainActivity) getActivity()).getMapManager().update();
+            }
+
+            @Override
             public void onSwitchForm() {
                 switchToSelectForm();
             }
